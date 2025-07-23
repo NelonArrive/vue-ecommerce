@@ -1,7 +1,7 @@
 <script setup>
 import { inject } from 'vue'
 
-const { closeDrawer } = inject('cartActions')
+const { closeDrawer } = inject('cart')
 </script>
 
 <template>
@@ -24,6 +24,6 @@ const { closeDrawer } = inject('cartActions')
 				stroke-linejoin="round"
 			/>
 		</svg>
-		<h2 class="text-2xl font-bold mb-10 flex items-center gap-5">Корзина</h2>
+		<h2 class="text-2xl font-bold flex items-center gap-5">Корзина</h2>
 	</div>
 </template>

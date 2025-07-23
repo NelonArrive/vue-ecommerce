@@ -1,6 +1,17 @@
 <script setup>
 import CartItem from './CartItem.vue'
 import DrawerHead from './DrawerHead.vue'
+import { computed } from 'vue'
+
+const props = defineProps({
+	cartItems: Array,
+	removeFromCart: Function,
+	totalPrice: Number
+})
+
+const taxAmount = computed(() => {
+	return Math.round(props.totalPrice * 0.05)
+})
 </script>
 
 <template>
@@ -9,25 +20,31 @@ import DrawerHead from './DrawerHead.vue'
 		<DrawerHead />
 		<div class="flex flex-col flex-1 justify-between">
 			<div class="flex flex-col gap-5">
+				<div v-if="cartItems.length === 0" class="text-center text-gray-500 mt-10 text-2xl">
+					<span class="text-5xl">😕</span> Корзина пустая
+				</div>
 				<CartItem
-					title="Тонер-картридж Hi-Black (HB-TK-1170) для Kyocera M2040dn/M2540dn, 7,2K, с чипом"
-					price="1000"
-					img="/cartridge/hi-black_hb-pc-211ev.jpg"
+					v-for="item in cartItems"
+					:key="item.id"
+					:title="item.title"
+					:price="item.price"
+					:img="item.imageUrl"
+					:on-click-delete="() => removeFromCart(item.id)"
 				/>
 			</div>
 
-			<div>
+			<div v-if="cartItems.length > 0">
 				<div class="flex flex-col gap-5">
 					<div class="flex items-end gap-2">
 						<span>Итого:</span>
 						<div class="flex-1 border-b border-dashed" />
-						<span class="font-bold">1000 руб.</span>
+						<span class="font-bold">{{ totalPrice }} руб.</span>
 					</div>
 
 					<div class="flex items-end gap-2">
 						<span>Налог 5%:</span>
 						<div class="flex-1 border-b border-dashed" />
-						<span class="font-bold">50 руб.</span>
+						<span class="font-bold">{{ taxAmount }} руб.</span>
 					</div>
 				</div>
 

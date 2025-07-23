@@ -1,6 +1,10 @@
 <script setup>
 import { ShoppingCart, Heart, CircleUserRound } from 'lucide-vue-next'
 
+defineProps({
+	totalPrice: Number
+})
+
 const emit = defineEmits(['openDrawer'])
 </script>
 
@@ -20,7 +24,7 @@ const emit = defineEmits(['openDrawer'])
 				class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-gray-800"
 			>
 				<ShoppingCart color="#ccc" />
-				<b>1205 руб.</b>
+				<b>{{ totalPrice }} ₽</b>
 			</li>
 
 			<li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-gray-800">

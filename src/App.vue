@@ -1,12 +1,13 @@
 <script setup>
-import { onMounted, provide, reactive, ref, watch } from 'vue'
 import axios from 'axios'
+import { computed, onMounted, provide, reactive, ref, watch } from 'vue'
 
-import Header from './components/Header.vue'
 import CardList from './components/CardList.vue'
 import Drawer from './components/Drawer.vue'
+import Header from './components/Header.vue'
 
 const items = ref([])
+const cartItems = ref([])
 
 const drawerToggle = ref(false)
 
@@ -16,6 +17,7 @@ const closeDrawer = () => {
 
 const openDrawer = () => {
 	drawerToggle.value = true
+	loadCartItems()
 }
 
 const filters = reactive({
@@ -39,6 +41,22 @@ const saveFavorites = favorites => {
 
 const saveCart = cart => {
 	localStorage.setItem('cart', JSON.stringify(cart))
+}
+
+const loadCartItems = () => {
+	cartItems.value = getCart()
+}
+
+const removeFromCart = itemId => {
+	const cart = getCart()
+	const updatedCart = cart.filter(item => item.id !== itemId)
+	saveCart(updatedCart)
+	cartItems.value = updatedCart
+
+	const itemIndex = items.value.findIndex(item => item.id === itemId)
+	if (itemIndex > -1) {
+		items.value[itemIndex].isAdded = false
+	}
 }
 
 const onChangeSelect = e => {
@@ -77,6 +95,7 @@ const addToCart = item => {
 	}
 
 	saveCart(cart)
+	loadCartItems()
 }
 
 const fetchItems = async () => {
@@ -100,20 +119,27 @@ const fetchItems = async () => {
 	}
 }
 
-onMounted(fetchItems)
+const totalPrice = computed(() => {
+	return cartItems.value.reduce((sum, item) => sum + item.price, 0)
+})
+
+onMounted(() => {
+	fetchItems()
+	loadCartItems()
+})
 watch(filters, fetchItems)
 
-provide('cartActions', {
+provide('cart', {
 	closeDrawer,
 	openDrawer
 })
 </script>
 
 <template>
-	<Drawer v-if="drawerToggle" />
+	<Drawer v-if="drawerToggle" :cart-items="cartItems" :remove-from-cart="removeFromCart" :total-price="totalPrice" />
 
 	<div class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-10">
-		<Header @open-drawer="openDrawer" />
+		<Header :total-price="totalPrice" @open-drawer="openDrawer" />
 
 		<div class="p-10">
 			<div class="flex justify-between items-center">
