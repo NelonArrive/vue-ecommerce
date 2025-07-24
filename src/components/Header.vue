@@ -22,7 +22,7 @@ const emit = defineEmits(['openDrawer'])
 		</RouterLink>
 
 		<ul class="flex items-center gap-10">
-			<li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-gray-800">
+			<li @click="emit('openDrawer')" class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-gray-800">
 				<ShoppingCart color="#ccc" />
 				<span>Корзина ({{ totalPrice }})</span>
 			</li>
@@ -33,7 +33,7 @@ const emit = defineEmits(['openDrawer'])
 					<span>Закладки</span>
 				</li>
 			</RouterLink>
-			
+
 			<li class="flex items-center cursor-pointer gap-3 text-gray-500 hover:text-gray-800">
 				<CircleUserRound color="#ccc" />
 				<span>Профиль</span>

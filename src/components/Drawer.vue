@@ -3,7 +3,7 @@ import CartItem from './CartItem.vue'
 import DrawerHead from './DrawerHead.vue'
 import { computed } from 'vue'
 
-const emit = defineEmits(['createOrder'])
+const emit = defineEmits(['createOrder', 'closeDrawer'])
 
 const props = defineProps({
 	cartItems: Array,
@@ -17,9 +17,9 @@ const taxAmount = computed(() => {
 </script>
 
 <template>
-	<div class="fixed z-10 top-0 h-full w-full bg-black opacity-70" />
+	<div class="fixed z-10 top-0 h-full w-full bg-black opacity-70" @click="emit('closeDrawer')" />
 	<div class="flex overflow-auto flex-col justify-between fixed z-10 top-0 h-full right-0 w-96 bg-white px-10 py-7">
-		<DrawerHead />
+		<DrawerHead @close="emit('closeDrawer')" />
 		<div class="flex flex-col flex-1 justify-between">
 			<div class="flex flex-col gap-5" v-auto-animate>
 				<div v-if="cartItems.length === 0" class="text-center text-gray-500 mt-10 text-2xl">
