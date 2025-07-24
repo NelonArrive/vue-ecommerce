@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-	<div class="grid grid-cols-4 gap-4">
+	<div class="grid grid-cols-4 gap-4" v-auto-animate>
 		<CardItem
 			v-for="item in items"
 			:key="item.id"
