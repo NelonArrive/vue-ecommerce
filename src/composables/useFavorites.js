@@ -61,21 +61,11 @@ export const useFavorites = () => {
 		saveFavoritesToStorage()
 	}
 
-	// Удаляем конкретный товар
-	const removeFavorite = itemId => {
-		const index = favorites.value.findIndex(fav => fav.id === itemId)
-		if (index > -1) {
-			favorites.value.splice(index, 1)
-			saveFavoritesToStorage()
-		}
-	}
-
 	return {
 		favorites: favoritesList,
 		favoritesCount,
 		isFavorite,
 		toggleFavorite,
-		clearFavorites,
-		removeFavorite
+		clearFavorites
 	}
 }
